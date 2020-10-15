@@ -1,0 +1,52 @@
+swagger: '2.0'
+info: {title: Shared Services MFA, version: '1.0', description: Theta Cybersecurity}
+host: api.thetasystems.co.nz
+basePath: /mfa
+schemes: [https]
+securityDefinitions:
+  API Key: {type: apiKey, in: header, name: cyberkey}
+security:
+- API Key: []
+paths:
+  /add:
+    post:
+      description: This endpoint recieves QR data from PowerApps which is ingested
+        here by API Management and passed to a Python Function which will send the  resulting
+        TOTP secret to Key Vault, generating a UUID for the transaction which is used
+        to reference all future interations with the secret being unwrapped.
+      operationId: add
+      summary: add new multifactor application
+      responses:
+        '200': {description: 'null'}
+      parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          properties:
+            data: {type: string, description: data}
+  /list:
+    get:
+      description: list all available roles to a user. this does not handle any authentication
+        and makes a direct query to the Function App which will query Table Storage
+        for every UUID and application name
+      operationId: list
+      summary: list all applications that have been added
+      responses:
+        '200': {description: 'null'}
+  /get:
+    get:
+      description: This will return a 6 digit, one time code to the requestor, coupled
+        with a TTL for the corresponding code.. A UUID is passed as a query, this
+        is passed through API Management to the Function that will query Key Vault
+        for the corresponding secret value. If the value exists, this will leverage
+        the Python module pyotp to convert the secret using server-side HOTP/HMAC
+        transforms.
+      operationId: get
+      summary: get totp code by presenting UUID for a given application
+      parameters:
+      - {name: uuid, in: query, required: true, type: string}
+      responses:
+        '200': {description: 'null'}
+tags: []
