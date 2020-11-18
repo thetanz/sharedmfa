@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-'''key doer'''
+'''get secret from app guid located in keyvault, calculate totp & return'''
 ################################################################################
 __status__ = "development"
 __maintainer__ = "josh highet"
@@ -28,9 +28,8 @@ tables = TableService(account_name='saprodaemfaforall', account_key=sacc_key)
 ################################################################################
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('http trigger function processed request.')
-
     uuid = req.params.get('uuid')
-    
+
     if not uuid:
         try:
             req_body = req.get_json()
@@ -46,12 +45,10 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         totp = otpgen.now()
         seconds_left = otpgen.interval - datetime.datetime.now().timestamp() % otpgen.interval
         miliseconds_left = seconds_left * 1000
-        
         data = {}
         data['otp'] = totp
         data['expires'] = miliseconds_left
         json_data = json.dumps(data)
-        
         return func.HttpResponse(json_data)
 
     else:

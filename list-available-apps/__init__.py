@@ -34,16 +34,12 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     toplevel = []
     for account in accounts:
         applications={}
-
         app = account.AccountName
         setname = account.CustomName
         uuid = account.RowKey
-
         applications['uuid'] = uuid
         applications['appname'] = app
         applications['custom'] = setname
-
         toplevel.append(applications)
-    
     json_data = json.dumps(toplevel)
     return func.HttpResponse(json_data)
