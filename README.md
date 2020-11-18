@@ -1,3 +1,5 @@
+![Deploy to Azure Function on Linux App Service](https://github.com/thetanz/sharedmfa/workflows/Deploy%20to%20Azure%20Function%20on%20Linux%20App%20Service/badge.svg)
+
 <a href="https://www.theta.co.nz/solutions/cyber-security/">
 <img src="https://avatars0.githubusercontent.com/u/2897191?s=70&v=4" 
 title="Theta Cybersecurity" alt="Theta Cybersecurity">
