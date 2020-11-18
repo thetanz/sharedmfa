@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-'''key doer'''
+'''handle addition of new totp strings'''
 ################################################################################
 __status__ = "development"
 __maintainer__ = "josh highet"
@@ -47,21 +47,18 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         secret = parse_qs(parser.query)['secret'][0]
         issuer = parse_qs(parser.query)['issuer'][0]
         kv.set_secret(identifier, secret)
-        
         table = Entity()
         table.PartitionKey = 'mfaseed'
         table.AccountName = issuer
         table.RowKey = identifier
         table.CustomName = appname
         tables.insert_entity('mfaforall', table)
-
         data = {}
         data['meta'] = 'success'
         data['action'] = 'add'
         data['name'] = issuer
         data['uuid'] = identifier
         json_data = json.dumps(data)
-
         return func.HttpResponse(json_data)
     else:
         return func.HttpResponse(
