@@ -7,17 +7,13 @@ __email__ = "josh.highet@theta.co.nz"
 ################################################################################
 import os
 import json
-import logging
-import datetime
 import azure.functions as func
 from azure.cosmosdb.table.tableservice import TableService
-from azure.cosmosdb.table.models import Entity
 ################################################################################
 stor_acc_conn_string = os.environ['AzureWebJobsStorage']
 tables = TableService(connection_string=stor_acc_conn_string)
 ################################################################################
 def main(req: func.HttpRequest) -> func.HttpResponse:
-    logging.info('http trigger function processed request.')
     try: accounts = tables.query_entities('apps', filter="PartitionKey eq 'mfaseed'") #, select='AccountName'
     except: return func.HttpResponse('nah')
     toplevel = []

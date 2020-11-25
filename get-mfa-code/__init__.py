@@ -20,8 +20,7 @@ from azure.cosmosdb.table.models import Entity
 ################################################################################
 kvname = os.environ["KEY_VAULT_NAME"]
 kvfqdn = f"https://{kvname}.vault.azure.net"
-credential = DefaultAzureCredential()
-kv = SecretClient(vault_url=kvfqdn, credential=credential)
+kv = SecretClient(vault_url=kvfqdn, credential=DefaultAzureCredential())
 ################################################################################
 stor_acc_conn_string = os.environ['AzureWebJobsStorage']
 tables = TableService(connection_string=stor_acc_conn_string)
