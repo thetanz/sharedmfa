@@ -23,8 +23,8 @@ kvfqdn = f"https://{kvname}.vault.azure.net"
 credential = DefaultAzureCredential()
 kv = SecretClient(vault_url=kvfqdn, credential=credential)
 ################################################################################
-sacc_key = os.environ["STORAGE_ACCOUNT_KEY"]
-tables = TableService(account_name='saprodaemfaforall', account_key=sacc_key)
+stor_acc_conn_string = os.environ['AzureWebJobsStorage']
+tables = TableService(connection_string=stor_acc_conn_string)
 ################################################################################
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('http trigger function processed request.')

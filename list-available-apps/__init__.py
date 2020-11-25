@@ -7,30 +7,19 @@ __email__ = "josh.highet@theta.co.nz"
 ################################################################################
 import os
 import json
-import pyotp
 import logging
 import datetime
 import azure.functions as func
-import urllib.parse as urlparse
-from urllib.parse import parse_qs
-from azure.keyvault.secrets import SecretClient
-from azure.identity import DefaultAzureCredential
 from azure.cosmosdb.table.tableservice import TableService
 from azure.cosmosdb.table.models import Entity
 ################################################################################
-kvname = os.environ["KEY_VAULT_NAME"]
-kvfqdn = f"https://{kvname}.vault.azure.net"
-credential = DefaultAzureCredential()
-kv = SecretClient(vault_url=kvfqdn, credential=credential)
-################################################################################
-sacc_key = os.environ["STORAGE_ACCOUNT_KEY"]
-tables = TableService(account_name='saprodaemfaforall', account_key=sacc_key)
+stor_acc_conn_string = os.environ['AzureWebJobsStorage']
+tables = TableService(connection_string=stor_acc_conn_string)
 ################################################################################
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('http trigger function processed request.')
-    accounts = tables.query_entities('mfaforall', filter="PartitionKey eq 'mfaseed'") #, select='AccountName'
-    data = {}
-    apps = {}
+    try: accounts = tables.query_entities('apps', filter="PartitionKey eq 'mfaseed'") #, select='AccountName'
+    except: return func.HttpResponse('nah')
     toplevel = []
     for account in accounts:
         applications={}

@@ -20,11 +20,10 @@ from azure.cosmosdb.table.models import Entity
 ################################################################################
 kvname = os.environ["KEY_VAULT_NAME"]
 kvfqdn = f"https://{kvname}.vault.azure.net"
-credential = DefaultAzureCredential()
-kv = SecretClient(vault_url=kvfqdn, credential=credential)
+kv = SecretClient(vault_url=kvfqdn, credential=DefaultAzureCredential())
 ################################################################################
-sacc_key = os.environ["STORAGE_ACCOUNT_KEY"]
-tables = TableService(account_name='saprodaemfaforall', account_key=sacc_key)
+stor_acc_conn_string = os.environ['AzureWebJobsStorage']
+tables = TableService(connection_string=stor_acc_conn_string)
 ################################################################################
 def main(req: func.HttpRequest) -> func.HttpResponse:
     identifier = str(uuid.uuid4())
@@ -52,7 +51,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         table.AccountName = issuer
         table.RowKey = identifier
         table.CustomName = appname
-        tables.insert_entity('mfaforall', table)
+        tables.insert_entity('apps', table)
         data = {}
         data['meta'] = 'success'
         data['action'] = 'add'
