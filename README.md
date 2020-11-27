@@ -5,73 +5,61 @@
 title="Theta Cybersecurity" alt="Theta Cybersecurity">
 </a>
 
-<!-- Shared MFA at Theta -->
+<!-- Shared MFA -->
 <!-- josh.highet@theta.co.nz -->
 <!-- test/development -->
 
-***Shared TOTP Facilitation for MFA on Shared Accounts***
+***Shared MFA***
 
 ---
 
-Multi Factor Authentication is a tremendous way to defend an account from takeover due to credential compromise or simple credential brute-forcing.
+Sharing usernames and passwords is never a desired state, however a number of common services used by most organisations today still lack the ability to support multiple accounts.
 
-We've all hopefully become accustomed to using MFA on the occasional personal account, but using MFA on shared accounts and enterprise services is often left behind due to complications around how to share and maintain shared devices to allow for this to be possible.
+This creates a burden when looking to adopt multi-factor authentication due to the challenges and complexities involved with sharing single-user-designed codes amongst a team.
 
-This project aims to remove these pains by providing a secure, serverless, shared MFA implementation using Python Azure Functions, Azure API Management and Azure Keyvault.
+This project aims to address these challenges by providing a serverless MFA implementation to support teams and organisations for the edge-cases we occasionally face. 
 
-The Python Function will expose 3 endpoints, `/get`, `/add` & `/list`. Each REST endpoint is described below.
+This has been built with Azure Functions, Table Storage, Azure Keyvault and Azure API Management. The core one-time PIN mechanism is supported by Python's [pyOTP Module](https://pyotp.readthedocs.io/en/latest/#)
 
-## MFA - `Add` Endpoint
-This endpoint takes a RFC spec OTP QR data field. Upon recieving input, a UUID is created which is used to reference the object for all future actions. The UUID is used to reference the QR secret value which is placed into Azure Keyvault
+## Technicals
 
-An example POST request to this endpoint is avalable below. A URL paraamater and JSON body is required.
+This function exposes 3 endpoints, `/add-totp-secret`, `/get-mfa-code` & `/list-available-apps`. Each REST endpoint is described below.
 
-## MFA - `List` Endpoint
-This endpoint will produce a JSON respoinse to authiorised requrests with a list of UUID's and Application Names to be references by subsequent requests to the Get endpoint.
+## `add-totp-secret`
 
-## MFA - `Get` Endpoint
-This endpoint is used to retrieve a code for a given applciation name. A URL paramater of the App Name is required.
+![alt text](assets/add-totp-secret.png)
 
+This endpoint takes a RFC spec OTP QR value as a JSON body, with a custom application name definde by a URL query paramater. Upon recieving a request, a UUID is created for the operation which is used to reference the secret for all future actions. The application name, UUID and custom attribute are added to Azure Table Storage. The OTP QR value is passed to Azure Keyvault, referenced by the UUID.
 
-## Examples
+## `list-available-apps`
 
-[Python OTP Module](https://pyotp.readthedocs.io/en/latest/#)
+![alt text](assets/list-available-apps.png)
 
-    curl 'https://api.thetasystems.co.nz/mfa/list' \
-    --header "cyberkey: XXXX" | jq
+This endpoint will produce a JSON dictionary response with a list of UUID's and application names of stored within Table Storage.
 
-    curl 'https://api.thetasystems.co.nz/mfa/get?uuid=XXX' \
-    --header "cyberkey: XXXX" | jq
+## `get-mfa-code`
 
-    curl 'https://api.thetasystems.co.nz/mfa/add?appname=XXXX' \
-    --data '{ "data": "otpauth://XXXX" }' \
-    --header "cyberkey: XXXX" | jq
+![alt text](assets/get-mfa-code.png)
+
+This endpoint is used to retrieve a code for a given application UUID. Upon recieving a UUID, the OTP value is retrieved from Key Vault, and the authentication code is generated and returned to the requestor with the time remaining on the current code.
 
 ---
 
 # Local Runtime & Debugging
 
-To run this project localls, `Azure Functions Core Tools` needs to be installed
+To run this project locally, [Azure Functions Core Tools](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=macos%2Ccsharp%2Cbash#install-the-azure-functions-core-tools) is required.
 
-[Azure Functions Core Tools Download](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=macos%2Ccsharp%2Cbash#install-the-azure-functions-core-tools)
+### Clone Repository
 
-**Clone this repository and enter the directory**
+*Run the following command to populate application configuration strings*
 
-*Run the following command to populate Application Settings*
+> This will create an encrypted file, `local.settings.json` hosting runtime configurations for the Function , exposed as environment variables.
 
-> This will create a local.settings.json file within the working directory.
+    func azure functionapp fetch-app-settings function_name_here
 
-> This encrypted file will allow for authentication to services required to make relenvant REST calls.
-
-    func azure functionapp fetch-app-settings fn-ae-prod-mfaforall
-
-**The following command will initiate the function**
+### Run the function
 
     func start --verbose
-
-**To push this to the App Service outside of the build pipeline**
-    
-    func azure functionapp publish fn-ae-prod-mfaforall --build-native-deps
 
 ---
 - 2020 <a href="https://www.theta.co.nz" target="_blank">Theta</a>.

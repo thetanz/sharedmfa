@@ -10,15 +10,24 @@ import json
 import azure.functions as func
 from azure.cosmosdb.table.tableservice import TableService
 ################################################################################
+#using the AzWebJobs environment variable, connect to azure table storage
 stor_acc_conn_string = os.environ['AzureWebJobsStorage']
 tables = TableService(connection_string=stor_acc_conn_string)
 ################################################################################
 def main(req: func.HttpRequest) -> func.HttpResponse:
-    try: accounts = tables.query_entities('apps', filter="PartitionKey eq 'mfaseed'") #, select='AccountName'
-    except: return func.HttpResponse('nah')
+    '''when an inbound request is recieved, query table
+     storage and formulate a json dictionary response'''
+    try:
+        accounts = tables.query_entities\
+        ('apps', filter="PartitionKey eq 'mfaseed'") #, select='AccountName'
+    except:
+        #handle borks
+        return func.HttpResponse('nah')
+    #create a structure to host all further applications found (nested)
     toplevel = []
+    #for each account returned, formulate a object from table storage and respond
     for account in accounts:
-        applications={}
+        applications = {}
         app = account.AccountName
         setname = account.CustomName
         uuid = account.RowKey
