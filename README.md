@@ -62,4 +62,4 @@ To run this project locally, [Azure Functions Core Tools](https://docs.microsoft
     func start --verbose
 
 ---
-- 2020 <a href="https://www.theta.co.nz" target="_blank">Theta</a>.
+- 2020 <a href="https://www.theta.co.nz/cyber" target="_blank">Theta</a>.
