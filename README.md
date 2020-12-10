@@ -1,9 +1,14 @@
-![Deploy to Azure Function on Linux App Service](https://github.com/thetanz/sharedmfa/workflows/Deploy%20to%20Azure%20Function%20on%20Linux%20App%20Service/badge.svg)
-
 <a href="https://www.theta.co.nz/solutions/cyber-security/">
 <img src="https://avatars0.githubusercontent.com/u/2897191?s=70&v=4" 
 title="Theta Cybersecurity" alt="Theta Cybersecurity">
 </a>
+
+<a href="https://portal.azure.com/#@theta.co.nz/resource/subscriptions/71a36b81-a0c9-4bcc-b60d-68272c887d4f/resourceGroups/rg-prod-ae-sharedmfa/overview">
+<img src="https://avatars2.githubusercontent.com/u/6844498?s=70&v=4" 
+title="Azure Resources" alt="Azure Resources">
+</a>
+
+![Deploy to Azure Function on Linux App Service](https://github.com/thetanz/sharedmfa/workflows/Deploy%20to%20Azure%20Function%20on%20Linux%20App%20Service/badge.svg)
 
 <!-- Shared MFA -->
 <!-- josh.highet@theta.co.nz -->
