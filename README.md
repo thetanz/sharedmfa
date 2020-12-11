@@ -26,6 +26,12 @@ This project aims to address these challenges by providing a serverless MFA impl
 
 This has been built with Azure Functions, Table Storage, Azure Keyvault and Azure API Management. The core one-time PIN mechanism is supported by Python's [pyOTP Module](https://pyotp.readthedocs.io/en/latest/#)
 
+# Solution Architecture
+![solution architecture](assets/sharedmfa-architecture.png)
+
+# Function Workflows
+![solution workflows](assets/sharedmfa-functions.png)
+
 ## Technicals
 
 This function exposes 3 endpoints, `/add-totp-secret`, `/get-mfa-code` & `/list-available-apps`. Each REST endpoint is described below.
