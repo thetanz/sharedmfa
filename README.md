@@ -8,6 +8,10 @@ title="Theta Cybersecurity" alt="Theta Cybersecurity">
 title="Azure Resources" alt="Azure Resources">
 </a>
 
+</br>
+
+[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=thetanz_sharedmfa&token=e8bf3e1b162b69d3eeb67e0f2478e04335640f13)](https://sonarcloud.io/dashboard?id=thetanz_sharedmfa)
+
 ![Deploy to Azure Function on Linux App Service](https://github.com/thetanz/sharedmfa/workflows/Deploy%20to%20Azure%20Function%20on%20Linux%20App%20Service/badge.svg)
 
 <!-- Shared MFA -->
@@ -53,24 +57,6 @@ This endpoint will produce a JSON dictionary response with a list of UUID's and 
 ![alt text](assets/get-mfa-code.png)
 
 This endpoint is used to retrieve a code for a given application UUID. Upon recieving a UUID, the OTP value is retrieved from Key Vault, and the authentication code is generated and returned to the requestor with the time remaining on the current code.
-
----
-
-# Local Runtime & Debugging
-
-To run this project locally, [Azure Functions Core Tools](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=macos%2Ccsharp%2Cbash#install-the-azure-functions-core-tools) is required.
-
-### Clone Repository
-
-*Run the following command to populate application configuration strings*
-
-> This will create an encrypted file, `local.settings.json` hosting runtime configurations for the Function , exposed as environment variables.
-
-    func azure functionapp fetch-app-settings function_name_here
-
-### Run the function
-
-    func start --verbose
 
 ---
 - 2020 <a href="https://www.theta.co.nz/cyber" target="_blank">Theta</a>.
