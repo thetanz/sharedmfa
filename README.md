@@ -18,7 +18,7 @@ title="Azure Resources" alt="Azure Resources">
 
 ---
 
-Sharing usernames and passwords is never a desired state, however a number of common services used by most organisations today still lack the ability to support multiple accounts.
+Sharing usernames and passwords is never a desired state however a number of common services used by most organisations today still lack the ability to support multiple accounts.
 
 This creates a burden when looking to adopt multi-factor authentication due to the challenges and complexities involved with sharing single-user-designed codes amongst a team.
 
