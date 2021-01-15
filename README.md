@@ -59,4 +59,4 @@ This endpoint will produce a JSON dictionary response with a list of UUID's and 
 This endpoint is used to retrieve a code for a given application UUID. Upon recieving a UUID, the OTP value is retrieved from Key Vault, and the authentication code is generated and returned to the requestor with the time remaining on the current code.
 
 ---
-- 2020 <a href="https://www.theta.co.nz/cyber" target="_blank">Theta</a>.
+- 2021 <a href="https://www.theta.co.nz/cyber" target="_blank">Theta</a>.
