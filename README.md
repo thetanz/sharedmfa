@@ -30,6 +30,8 @@ This project aims to address these challenges by providing a serverless MFA impl
 
 This has been built with Azure Functions, Table Storage, Azure Keyvault and Azure API Management. The core one-time PIN mechanism is supported by Python's [pyOTP Module](https://pyotp.readthedocs.io/en/latest/#)
 
+Shared MFA's API's can be viewed and tested from [devportal.thetasystems.co.nz/api-details#api=sharedmfa](https://devportal.thetasystems.co.nz/api-details#api=sharedmfa)
+
 # Solution Architecture
 ![solution architecture](assets/sharedmfa-architecture.png)
 
