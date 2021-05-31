@@ -1,0 +1,5 @@
+pyotp
+azure-functions
+azure.identity
+azure-keyvault-secrets
+azure-cosmosdb-table

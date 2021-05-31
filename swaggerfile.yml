@@ -1,0 +1,50 @@
+swagger: '2.0'
+info: {title: Shared MFA, version: '1.0', description: Theta Security}
+host: function_url_here
+basePath: /api
+schemes: [https]
+securityDefinitions:
+  API Key: {type: apiKey, in: header, name: code}
+security:
+- API Key: []
+paths:
+  /add-totp-secret:
+    post:
+      description: This endpoint recieves QR data from PowerApps which is ingested
+        here by API Management and passed to a Python Function which will send the  resulting
+        TOTP secret to Key Vault, generating a UUID for the transaction which is used
+        to reference all future interations with the secret being unwrapped.
+      operationId: add
+      summary: add new multifactor application
+      responses:
+        '200': {description: 'null'}
+      parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          properties:
+            data: {type: string, description: data}
+  /list-available-apps:
+    get:
+      description: list all available applications by querying Table Storage for every UUID
+      and accompanied application name, used with the get-mfa-code endpoint to unwrap a token
+      operationId: list
+      summary: list all applications that have been added to kv
+      responses:
+        '200': {description: 'null'}
+  /get-mfa-code:
+    get:
+      description: This will return a 6 digit, one time code to the requestor, coupled
+        with a TTL for the corresponding pin. A UUID is passed as a query which will be
+        queried against Key Vault for the corresponding secret value.
+        If the value exists, this will leverage the Python module pyotp to convert the
+        secret with a server-side transform.
+      operationId: get
+      summary: get totp code by presenting UUID for a given application
+      parameters:
+      - {name: uuid, in: query, required: true, type: string}
+      responses:
+        '200': {description: 'null'}
+tags: []
