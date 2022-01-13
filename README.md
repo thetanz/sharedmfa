@@ -98,4 +98,4 @@ this endpoint is used to retrieve a code for a given UUID - requests generate an
 ![alt text](assets/get-mfa-code.png)
 
 ---
-- 2021 <a href="https://www.theta.co.nz/cyber" target="_blank">Theta</a>.
+[Theta](https://www.theta.co.nz/cyber)
